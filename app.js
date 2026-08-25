@@ -11,7 +11,7 @@
 
 // EDIT THIS before publishing to GitHub Pages: your deployed Worker URL,
 // no trailing slash, e.g. "https://attendance-app.yourname.workers.dev"
-const API_BASE = "https://attendance-app.YOUR-SUBDOMAIN.workers.dev";
+const API_BASE = "monolithtest.liamthefirst590.workers.dev";
 
 const state = { token: localStorage.getItem("rb_token") || null, username: localStorage.getItem("rb_username") || null, role: localStorage.getItem("rb_role") || null, students: [] };
 
