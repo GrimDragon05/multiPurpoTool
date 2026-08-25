@@ -1,0 +1,202 @@
+/* ---------------------------------------------------------------------
+   Design tokens — "roll book" theme: chalkboard header, paper ledger body
+--------------------------------------------------------------------- */
+:root {
+  --ink-900: #1b2b26;      /* chalkboard green-black */
+  --ink-700: #2c453d;
+  --paper: #faf7ef;        /* warm paper, not the generic cream */
+  --paper-line: #e3ddc9;   /* ledger rule lines */
+  --brass: #b3862c;        /* accent — brass nameplate, not terracotta */
+  --brass-light: #d9a83f;
+  --chalk: #f4f1e6;
+  --ok: #3f7d5c;
+  --warn: #b3862c;
+  --danger: #a4432f;
+  --font-display: "Lora", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink-900);
+  min-height: 100vh;
+}
+
+.screen { min-height: 100vh; }
+.screen[hidden] { display: none; }
+
+/* ---------------------------------------------------------------------
+   Login
+--------------------------------------------------------------------- */
+#login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px;
+  background:
+    linear-gradient(var(--ink-900), var(--ink-900)) top / 100% 220px no-repeat,
+    var(--paper);
+}
+
+.ledger-card {
+  background: var(--chalk);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 40px rgba(27, 43, 38, 0.25);
+  padding: 36px 32px 28px;
+  width: 360px;
+  position: relative;
+}
+
+.ledger-tab {
+  position: absolute;
+  top: -14px;
+  left: 24px;
+  background: var(--brass);
+  color: var(--ink-900);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+.login-card h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  margin: 10px 0 2px;
+}
+
+.muted { color: #5c6b62; font-size: 13.5px; }
+
+#login-form, #register-form { margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+label { font-size: 13px; font-weight: 500; display: flex; flex-direction: column; gap: 6px; }
+
+input, select {
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  padding: 10px 11px;
+  border: 1px solid #cfc9b4;
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink-900);
+}
+input:focus, select:focus, button:focus-visible {
+  outline: 2px solid var(--brass-light);
+  outline-offset: 1px;
+}
+
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  border: none;
+  border-radius: var(--radius);
+  padding: 11px 16px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+.btn.primary { background: var(--brass); color: var(--ink-900); }
+.btn.primary:hover { filter: brightness(1.08); }
+.btn.ghost { background: transparent; border: 1px solid var(--paper-line); color: var(--ink-900); }
+.btn.small { padding: 7px 12px; font-size: 13px; }
+
+.link-btn {
+  background: none; border: none; color: var(--brass);
+  font-weight: 600; cursor: pointer; padding: 0; font-size: 13px;
+  text-decoration: underline;
+}
+.form-note { margin-top: 16px; font-size: 13px; }
+.error-text { color: var(--danger); font-size: 13px; margin-top: 10px; }
+
+/* ---------------------------------------------------------------------
+   App shell
+--------------------------------------------------------------------- */
+.app-header {
+  background: var(--ink-900);
+  color: var(--chalk);
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 28px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 8px; font-family: var(--font-display); font-size: 19px; }
+.brand-mark { color: var(--brass-light); font-size: 22px; }
+
+.tabs { display: flex; gap: 4px; flex: 1; }
+.tab {
+  background: none; border: none; color: #cfd8d1;
+  font-family: var(--font-body); font-weight: 500; font-size: 14px;
+  padding: 8px 14px; border-radius: 3px 3px 0 0; cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.tab.active { color: var(--chalk); border-bottom: 2px solid var(--brass-light); }
+
+.who { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.who-name { font-size: 13.5px; }
+.pill {
+  font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase;
+  background: var(--ink-700); color: var(--brass-light);
+  padding: 3px 8px; border-radius: 10px; letter-spacing: 0.05em;
+}
+
+.panel { max-width: 1040px; margin: 0 auto; padding: 28px 24px 60px; }
+.panel[hidden] { display: none; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
+.panel-head h2 { font-family: var(--font-display); font-size: 22px; margin: 0; }
+.controls { display: flex; align-items: center; gap: 10px; }
+.inline-label { flex-direction: row; align-items: center; gap: 8px; font-size: 13px; }
+
+/* ---------------------------------------------------------------------
+   Ledger table
+--------------------------------------------------------------------- */
+.ledger-table { width: 100%; border-collapse: collapse; background: var(--chalk); border: 1px solid var(--paper-line); }
+.ledger-table th {
+  text-align: left; font-family: var(--font-mono); font-size: 11px; text-transform: uppercase;
+  letter-spacing: 0.06em; color: #6b7a71; padding: 10px 12px; border-bottom: 1px solid var(--paper-line);
+}
+.ledger-table td { padding: 10px 12px; border-bottom: 1px solid var(--paper-line); font-size: 14px; }
+.ledger-table tr:last-child td { border-bottom: none; }
+.status-col { text-align: center; width: 70px; }
+.ledger-table input[type="radio"] { width: 16px; height: 16px; accent-color: var(--brass); }
+
+.empty-state { color: #6b7a71; font-size: 14px; padding: 24px 4px; }
+
+.row-actions { display: flex; gap: 8px; }
+.row-actions button {
+  background: none; border: none; color: var(--brass); cursor: pointer; font-size: 13px; font-weight: 600;
+}
+.row-actions button.danger { color: var(--danger); }
+
+.amount { font-family: var(--font-mono); }
+
+.badge { font-family: var(--font-mono); font-size: 11px; padding: 3px 8px; border-radius: 10px; text-transform: uppercase; }
+.badge.paid { background: rgba(63,125,92,0.15); color: var(--ok); }
+.badge.unpaid { background: rgba(164,67,47,0.12); color: var(--danger); }
+.badge.partial { background: rgba(179,134,44,0.15); color: var(--warn); }
+
+/* ---------------------------------------------------------------------
+   Dialogs
+--------------------------------------------------------------------- */
+dialog { border: none; border-radius: var(--radius); padding: 0; }
+dialog::backdrop { background: rgba(27,43,38,0.45); }
+.dialog-form { padding: 26px 26px 20px; display: flex; flex-direction: column; gap: 14px; width: 320px; }
+.dialog-form h3 { font-family: var(--font-display); margin: 0 0 4px; font-size: 19px; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+
+@media (max-width: 640px) {
+  .app-header { padding: 12px 16px; }
+  .who-name { display: none; }
+  .panel { padding: 20px 14px 50px; }
+}

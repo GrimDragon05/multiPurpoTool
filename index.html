@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Roll Book · Attendance & Payments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ============ LOGIN SCREEN ============ -->
+  <section id="login-screen" class="screen">
+    <div class="ledger-card login-card">
+      <div class="ledger-tab">Roll Book</div>
+      <h1>Sign in</h1>
+      <p class="muted">Attendance, records &amp; payments — kept in one place.</p>
+      <form id="login-form">
+        <label>Username
+          <input type="text" id="login-username" autocomplete="username" required />
+        </label>
+        <label>Password
+          <input type="password" id="login-password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="btn primary">Sign in</button>
+      </form>
+      <p class="form-note">
+        First time here? <button id="show-register" class="link-btn">Create the admin account</button>
+      </p>
+      <p id="login-error" class="error-text" hidden></p>
+    </div>
+
+    <div class="ledger-card login-card" id="register-card" hidden>
+      <div class="ledger-tab">New account</div>
+      <h1>Create account</h1>
+      <p class="muted">The very first account created becomes the admin.</p>
+      <form id="register-form">
+        <label>Username
+          <input type="text" id="reg-username" required />
+        </label>
+        <label>Password <span class="muted">(8+ characters)</span>
+          <input type="password" id="reg-password" minlength="8" required />
+        </label>
+        <button type="submit" class="btn primary">Create account</button>
+      </form>
+      <p class="form-note">
+        <button id="show-login" class="link-btn">Back to sign in</button>
+      </p>
+      <p id="register-error" class="error-text" hidden></p>
+    </div>
+  </section>
+
+  <!-- ============ APP SHELL ============ -->
+  <section id="app-screen" class="screen" hidden>
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-mark">§</span>
+        <span class="brand-name">Roll Book</span>
+      </div>
+      <nav class="tabs" id="tabs">
+        <button class="tab active" data-tab="attendance">Attendance</button>
+        <button class="tab" data-tab="students">Students</button>
+        <button class="tab" data-tab="payments">Payments</button>
+      </nav>
+      <div class="who">
+        <span id="who-username" class="who-name"></span>
+        <span id="who-role" class="pill"></span>
+        <button id="logout-btn" class="btn ghost small">Sign out</button>
+      </div>
+    </header>
+
+    <!-- ---------- ATTENDANCE TAB ---------- -->
+    <main class="panel" id="panel-attendance">
+      <div class="panel-head">
+        <h2>Roll call</h2>
+        <div class="controls">
+          <label class="inline-label">Date
+            <input type="date" id="attendance-date" />
+          </label>
+          <button id="save-attendance" class="btn primary small">Save roll</button>
+        </div>
+      </div>
+      <table class="ledger-table" id="attendance-table">
+        <thead>
+          <tr><th>Student</th><th>Class</th><th class="status-col">Present</th><th class="status-col">Late</th><th class="status-col">Absent</th><th class="status-col">Excused</th></tr>
+        </thead>
+        <tbody id="attendance-rows"></tbody>
+      </table>
+      <p class="empty-state" id="attendance-empty" hidden>No students yet — add some in the Students tab first.</p>
+    </main>
+
+    <!-- ---------- STUDENTS TAB ---------- -->
+    <main class="panel" id="panel-students" hidden>
+      <div class="panel-head">
+        <h2>Students</h2>
+        <button id="new-student-btn" class="btn primary small">+ Add student</button>
+      </div>
+      <table class="ledger-table">
+        <thead><tr><th>Name</th><th>Code</th><th>Class</th><th>Contact</th><th></th></tr></thead>
+        <tbody id="students-rows"></tbody>
+      </table>
+
+      <dialog id="student-dialog">
+        <form id="student-form" class="dialog-form">
+          <h3 id="student-dialog-title">Add student</h3>
+          <input type="hidden" id="student-id" />
+          <label>Full name <input type="text" id="student-name" required /></label>
+          <label>Student code <input type="text" id="student-code" /></label>
+          <label>Class <input type="text" id="student-class" /></label>
+          <label>Contact <input type="text" id="student-contact" /></label>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" id="student-cancel">Cancel</button>
+            <button type="submit" class="btn primary">Save</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+
+    <!-- ---------- PAYMENTS TAB ---------- -->
+    <main class="panel" id="panel-payments" hidden>
+      <div class="panel-head">
+        <h2>Payments</h2>
+        <div class="controls">
+          <select id="payment-filter">
+            <option value="">All statuses</option>
+            <option value="paid">Paid</option>
+            <option value="unpaid">Unpaid</option>
+            <option value="partial">Partial</option>
+          </select>
+          <button id="new-payment-btn" class="btn primary small">+ Record payment</button>
+        </div>
+      </div>
+      <table class="ledger-table">
+        <thead><tr><th>Student</th><th>Period</th><th>Amount</th><th>Status</th><th>Paid on</th><th>Notes</th></tr></thead>
+        <tbody id="payments-rows"></tbody>
+      </table>
+
+      <dialog id="payment-dialog">
+        <form id="payment-form" class="dialog-form">
+          <h3>Record payment</h3>
+          <label>Student
+            <select id="payment-student" required></select>
+          </label>
+          <label>Amount <input type="number" step="0.01" id="payment-amount" required /></label>
+          <label>Period <input type="text" id="payment-period" placeholder="e.g. 2026-08" /></label>
+          <label>Status
+            <select id="payment-status">
+              <option value="unpaid">Unpaid</option>
+              <option value="partial">Partial</option>
+              <option value="paid">Paid</option>
+            </select>
+          </label>
+          <label>Paid on <input type="date" id="payment-paid-on" /></label>
+          <label>Notes <input type="text" id="payment-notes" /></label>
+          <div class="dialog-actions">
+            <button type="button" class="btn ghost" id="payment-cancel">Cancel</button>
+            <button type="submit" class="btn primary">Save</button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
